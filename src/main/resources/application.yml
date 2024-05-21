@@ -1,0 +1,41 @@
+server:
+  port: 8085
+
+spring:
+  sql:
+    init:
+      mode: always # to use schema.sql to create table schema etc. For insert data we use data.sql by property spring.jpa.defer-datasource-initialization=true
+  application:
+    name: spring-security
+
+    # ===============================
+    # = DATA SOURCE
+    # ===============================
+    # Set here configurations for the database connection
+
+  datasource:
+    url: jdbc:postgresql://localhost:5433/springbootsecuritydb
+    username: pw
+    password: secret
+    driver-class-name: org.postgresql.Driver
+    # Keep the connection alive if idle for a long time (needed in production)
+    testWhileIdle: true
+    validationQuery: SELECT 1
+
+    # ===============================
+    # = JPA / HIBERNATE
+    # ===============================
+    # Show or not log for each sql query
+    jpa:
+      show-sql: true
+      #defer-datasource-initialization: true # to make hibernate to execute script and create our tables in data.sql
+      #generate-ddl: true
+      # Hibernate ddl auto (create, create-drop, update): with "create-drop" the database
+      # schema will be automatically created afresh for every start of application, avoid it can drop db in production
+      hibernate:
+        ddl-auto: update
+
+security:
+  jwt:
+    secret-key: f3d210745e9c5ba26d690bb49862aa0d3b1a71b05eabda338bfff33b4402a24b # The secret key must be an HMAC hash string of 256 bits; otherwise, the token generation will throw an error. generate from https://www.devglan.com/online-tools/hmac-sha256-online?ref=blog.tericcabrel.com
+    expiration-time: 3600000 # The token expiration time is expressed in milliseconds, so remember if your token expires too soon, in 1h.
